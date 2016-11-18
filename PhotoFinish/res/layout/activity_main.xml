@@ -1,7 +1,10 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -9,8 +12,50 @@
     tools:context="com.obik99.bean.MainActivity" >
 
     <TextView
+        android:id="@+id/TextView02"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hola Mundo" />
+        android:text="@string/str_confevent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/rojoprofundo"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+    
+    <View
+        android:id="@+id/lineaHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/graylight" />
+        
+        
+    <Button
+        android:layout_marginTop="10dp"
+        android:id="@+id/btnIniciarCompetencia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@drawable/buttonround"
+        android:text="@string/str_iniciarcomp" />
 
-</RelativeLayout>
+    <EditText
+        android:layout_marginTop="20dp"
+        android:id="@+id/editText1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" >
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:text="@string/str_nombreevento" />
+
+</LinearLayout>

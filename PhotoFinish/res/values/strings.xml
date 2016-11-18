@@ -4,5 +4,9 @@
     <string name="app_name">PhotoFinish</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    
+    <string name="str_confevent">Configuración de Evento</string>
+    <string name="str_iniciarcomp">Iniciar Competencia</string>
+    <string name="str_nombreevento">Nombre del Evento</string>
 
 </resources>
