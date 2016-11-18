@@ -80,7 +80,7 @@
             android:text="@string/str_valoresdefault" />
 
         <RadioButton
-            android:id="@+id/radio1"
+            android:id="@+id/rbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/str_valoresnodefault" />

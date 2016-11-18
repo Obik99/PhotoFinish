@@ -11,5 +11,6 @@
     <string name="str_valoresdefault">Valores por defecto</string>
     <string name="str_valoresnodefault">Cambiar valores</string>
     <string name="str_orientacion">Orientación del evento</string>
+    
 
 </resources>
