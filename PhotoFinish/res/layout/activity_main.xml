@@ -15,38 +15,39 @@
         android:id="@+id/TextView02"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:text="@string/str_confevent"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/rojoprofundo"
         android:textSize="25dp"
         android:textStyle="bold" />
-    
+
     <View
-        android:id="@+id/lineaHorizontal"
+        android:id="@+id/View01"
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_marginTop="5dp"
         android:background="@color/graylight" />
-        
-        
+
     <Button
-        android:layout_marginTop="10dp"
         android:id="@+id/btnIniciarCompetencia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
+        android:layout_marginTop="10dp"
         android:background="@drawable/buttonround"
-        android:text="@string/str_iniciarcomp" />
+        android:padding="10dp"
+        android:text="@string/str_iniciarcomp"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold" />
 
     <EditText
-        android:layout_marginTop="20dp"
         android:id="@+id/editText1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:ems="10" >
+
         <requestFocus />
     </EditText>
 
@@ -54,8 +55,35 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
+        android:text="@string/str_nombreevento"
         android:textSize="15dp"
-        android:text="@string/str_nombreevento" />
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/lineaHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/graylight" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupValores"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/radio0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/str_valoresdefault" />
+
+        <RadioButton
+            android:id="@+id/radio1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_valoresnodefault" />
+    </RadioGroup>
 
 </LinearLayout>
