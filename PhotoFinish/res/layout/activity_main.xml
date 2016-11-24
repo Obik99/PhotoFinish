@@ -39,7 +39,8 @@
         android:text="@string/str_iniciarcomp"
         android:textColor="@color/white"
         android:textSize="20dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:onClick="iniciarCompetencia" />
 
     <EditText
         android:id="@+id/editText1"
@@ -89,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:text="@string/str_a_izq"
+            android:text="@string/str_meta"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -99,7 +100,7 @@
             android:layout_alignBaseline="@+id/radioButton1"
             android:layout_alignBottom="@+id/radioButton1"
             android:layout_toLeftOf="@+id/radioButton2"
-            android:text="@string/str_a_der"
+            android:text="@string/str_meta"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -108,7 +109,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="|"
+            android:textColor="@color/rojoprofundo"
+            android:text="@string/str_delimitador_salida"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
     </RelativeLayout>

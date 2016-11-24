@@ -10,10 +10,10 @@
     <string name="str_nombreevento">Nombre del Evento</string>
     <string name="str_valoresdefault">Valores por defecto</string>
     <string name="str_valoresnodefault">Cambiar valores</string>
-    <string name="str_orientacion">Orientación de la Imagen</string>
-    <string name="str_a_izq">Izquierda</string>
-    <string name="str_a_der">Derecha</string>
+    <string name="str_orientacion">Orientación de la Prueba</string>
+    <string name="str_meta">Meta</string>
     <string name="str_salida">SALIDA</string>
+    <string name="str_delimitador_salida">|</string>
     
 
 </resources>
