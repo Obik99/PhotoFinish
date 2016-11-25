@@ -1,17 +1,24 @@
 package com.obik99.bean;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 
 public class MainActivity extends ActionBarActivity {
+	private EditText edtNombreEvento;
+	
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        edtNombreEvento = (EditText) findViewById(R.id.edtNombreEvento);
     }
 
 
@@ -32,5 +39,11 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    
+    public void iniciarCompetencia(View view){
+    	Intent intent = new Intent(this, Photo.class);
+		intent.putExtra("NombreEvento", edtNombreEvento.getText().toString());
+		startActivity(intent);
     }
 }
