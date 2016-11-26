@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 
 public class MainActivity extends ActionBarActivity {
+	//Variables Globales
 	private EditText edtNombreEvento;
 	
 
@@ -41,7 +42,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
     
-    public void iniciarCompetencia(View view){
+    public void iniciarCompetencia(View view){ 
     	Intent intent = new Intent(this, Photo.class);
 		intent.putExtra("NombreEvento", edtNombreEvento.getText().toString());
 		startActivity(intent);

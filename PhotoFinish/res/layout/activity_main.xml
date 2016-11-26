@@ -21,6 +21,7 @@
         android:textColor="@color/rojoprofundo"
         android:textSize="25dp"
         android:textStyle="bold" />
+    
 
     <View
         android:id="@+id/View01"
