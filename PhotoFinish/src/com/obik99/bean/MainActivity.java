@@ -1,17 +1,23 @@
 package com.obik99.bean;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 
 
 public class MainActivity extends ActionBarActivity {
 	//Variables Globales
+	SharedPreferences preferencias;
 	private EditText edtNombreEvento;
+	private RadioButton rbtnIzq;   //En SharedPreferences: Activo 1
+	private RadioButton rbtnDer;   //En SharedPreferences: Activo 0
 	
 
     @Override
@@ -19,7 +25,18 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
+        //Enlace con el Layout "activity_main.xml"
         edtNombreEvento = (EditText) findViewById(R.id.edtNombreEvento);
+        rbtnIzq = (RadioButton) findViewById(R.id.rbtnIzquierda);
+        rbtnDer = (RadioButton) findViewById(R.id.rbtnDerecha);
+        
+        //Preferencias guardadas al Iniciar la Pantalla Principal
+        preferencias = getSharedPreferences("RadioButton_Orientacion_Imagen", Context.MODE_PRIVATE);
+        
+        if(preferencias.getString("1", "").equals("")){
+        	rbtnIzq.setChecked(true);
+        	rbtnDer.setChecked(false);
+        }
     }
 
 
@@ -46,5 +63,19 @@ public class MainActivity extends ActionBarActivity {
     	Intent intent = new Intent(this, Photo.class);
 		intent.putExtra("NombreEvento", edtNombreEvento.getText().toString());
 		startActivity(intent);
+    }
+    
+    
+    //Comportamiento de los Radio Button
+    public void onClickRadioButtonIzquierdo(){
+    	if(!rbtnIzq.isChecked()){
+    	    rbtnDer.setChecked(true);	
+    	}
+    }
+    
+    public void onClickRadioButtonDerecho(){
+    	if(!rbtnDer.isChecked()){
+    	    rbtnIzq.setChecked(true);	
+    	}
     }
 }
