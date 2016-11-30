@@ -10,10 +10,9 @@
     <string name="str_iniciarcomp">Iniciar Competencia</string>
     <string name="str_nombreevento">Nombre del Evento</string>
     <string name="str_valoresdefault">Valores por defecto</string>
-    <string name="str_valoresnodefault">Cambiar valores</string>
     <string name="str_orientacion">Orientación de la Prueba</string>
     <string name="str_meta">Meta</string>
     <string name="str_salida">SALIDA</string>
-    <string name="str_delimitador_salida">|</string>
+    <string name="str_valor_default">Valor por defecto</string>
    
 </resources>

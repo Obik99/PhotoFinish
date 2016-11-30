@@ -21,7 +21,6 @@
         android:textColor="@color/rojoprofundo"
         android:textSize="25dp"
         android:textStyle="bold" />
-    
 
     <View
         android:id="@+id/View01"
@@ -36,12 +35,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@drawable/buttonround_iniciarcompetencia"
+        android:onClick="iniciarCompetencia"
         android:padding="10dp"
         android:text="@string/str_iniciarcomp"
         android:textColor="@color/white"
         android:textSize="20dp"
-        android:textStyle="bold"
-        android:onClick="iniciarCompetencia" />
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/edtNombreEvento"
@@ -61,60 +60,87 @@
         android:textSize="15dp"
         android:textStyle="bold" />
 
+    <CheckBox
+        android:id="@+id/cbxValoresDefault"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:checked="true"
+        android:text="@string/str_valor_default"
+        android:textStyle="italic" />
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         android:text="@string/str_orientacion"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/rojoprofundo"
         android:textStyle="bold" />
-
+    
     <RelativeLayout
         android:id="@+id/RelativeLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="right" >
 
-        <RadioButton
-            android:id="@+id/rbtnDerecha"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:gravity="center_vertical|start"
-            android:text="" />
+        <RadioGroup
+           android:id="@+id/radioGroup1"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:gravity="center"
+           >
 
-        <RadioButton
-            android:id="@+id/rbtnIzquierda"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:checked="true"
-            android:text="@string/str_meta"
-            android:onClick=""
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+             <RadioButton
+                 android:id="@+id/rbtnIzq"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:button="@null"
+                 android:checked="false"
+                 android:drawableRight="@android:drawable/btn_radio"
+                 android:text="@string/str_meta"
+                 android:textColor="@color/greendark"
+                 android:textStyle="bold"
+                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:textColor="@color/rojoprofundo"
-            android:text="@string/str_delimitador_salida"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+             <ImageButton
+                 android:id="@+id/imageButton1"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:background="@color/white"
+                 android:src="@drawable/btn_izquierda" />
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView5"
-            android:layout_toLeftOf="@+id/rbtnDerecha"
-            android:text="@string/str_meta"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+             <TextView
+                 android:id="@+id/textView4"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="@string/str_salida"
+                 android:textAppearance="?android:attr/textAppearanceMedium"
+                 android:textColor="@color/greendark"
+                 android:textStyle="bold" />
+
+             <ImageButton
+                 android:id="@+id/imageButton2"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:background="@color/white"
+                 android:src="@drawable/btn_derecha" />
+
+             <RadioButton
+                 android:id="@+id/rbtnDer"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:button="@null"
+                 android:checked="false"
+                 android:drawableLeft="@android:drawable/btn_radio"
+                 android:text="@string/str_meta"
+                 android:textColor="@color/greendark"
+                 android:textStyle="bold"
+                 android:textAppearance="?android:attr/textAppearanceMedium" />
+       
+        </RadioGroup>
+
 
     </RelativeLayout>
 
@@ -122,36 +148,6 @@
         android:id="@+id/RelativeLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:background="@color/white"
-            android:src="@drawable/btn_derecha" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:textColor="@color/greendark"
-            android:text="@string/str_salida"
-            android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <ImageButton
-            android:id="@+id/imageButton1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:background="@color/white"
-            android:src="@drawable/btn_izquierda" />
-
     </RelativeLayout>
 
 </LinearLayout>
