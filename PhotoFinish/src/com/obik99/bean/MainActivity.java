@@ -4,10 +4,12 @@ import android.support.v7.app.ActionBarActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -33,15 +35,62 @@ public class MainActivity extends ActionBarActivity {
         rbtnIzq = (RadioButton) findViewById(R.id.rbtnIzq);
         rbtnDer = (RadioButton) findViewById(R.id.rbtnDer);
         
+        //-------- VALORES INICIALES ---------
+        //RadioButton desactivados, hasta que se dé click en CheckBox
+        rbtnIzq.setEnabled(false);
+        rbtnDer.setEnabled(false);
+        
         //Preferencias guardadas al Iniciar la Pantalla Principal
         preferencias = getSharedPreferences("Orientacion_Imagen", Context.MODE_PRIVATE);
         
-        if(preferencias.getString("1", "").equals("")){
+        //Condición para ver si la Orientación
+        if(preferencias.getString("orientacionImg", "rbtnIzq").equals("rbtnIzq")){
         	rbtnIzq.setChecked(true);
         	rbtnDer.setChecked(false);
+        }else if(preferencias.getString("orientacionImg", "rbtnIzq").equals("rbtnDer")){
+        	rbtnIzq.setChecked(false);
+        	rbtnDer.setChecked(true);
         }
-    }
 
+        
+        //Click en CheckBox del activity_main.xml
+        cbxConfDefault.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(cbxConfDefault.isChecked()){
+					rbtnDer.setEnabled(false);
+					rbtnIzq.setEnabled(false);
+				}
+				else{
+					rbtnDer.setEnabled(true);
+					rbtnIzq.setEnabled(true);
+				}
+			}
+		});
+        
+ 
+        rbtnIzq.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String dato = "rbtnIzq";
+				SharedPreferences preferencias=getSharedPreferences("orientacionImg",Context.MODE_PRIVATE);
+		        Editor editor=preferencias.edit();
+		        editor.putString("orientacionImg", dato);
+		        editor.commit();
+			}
+		});
+        
+        rbtnDer.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String dato = "rbtnDer";
+				SharedPreferences preferencias=getSharedPreferences("orientacionImg",Context.MODE_PRIVATE);
+		        Editor editor=preferencias.edit();
+		        editor.putString("orientacionImg", dato);
+		        editor.commit();
+			}
+		});
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -62,12 +111,34 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
     
+    //Pasar al Acitivity "photo.xml"
     public void iniciarCompetencia(View view){ 
     	Intent intent = new Intent(this, Photo.class);
-		intent.putExtra("NombreEvento", edtNombreEvento.getText().toString());
+    	String orientacion = ""+((rbtnIzq.isChecked()) ? "izq":"der");
+    	
+    	//Enviar datos al siguiente Activity
+		intent.putExtra("nombreEvento", edtNombreEvento.getText().toString());
+		intent.putExtra("orientacionImagen", orientacion);
+		
+        //Iniciar Activity
 		startActivity(intent);
     }
     
+    //Cambiar SharedPreferences dependiendo de la Orientación de la Imagen
+    public void clickRbtnIzq(){
+		String dato = "rbtnIzq";
+		SharedPreferences preferencias=getSharedPreferences("orientacionImg",Context.MODE_PRIVATE);
+        Editor editor=preferencias.edit();
+        editor.putString("orientacionImg", dato);
+        editor.commit();
+    }
     
+    public void clickRbtnDer(){
+		String dato = "rbtnDer";
+		SharedPreferences preferencias=getSharedPreferences("orientacionImg",Context.MODE_PRIVATE);
+        Editor editor=preferencias.edit();
+        editor.putString("orientacionImg", dato);
+        editor.commit();
+    }
   
 }

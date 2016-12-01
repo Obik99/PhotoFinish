@@ -102,7 +102,7 @@
                  android:text="@string/str_meta"
                  android:textColor="@color/greendark"
                  android:textStyle="bold"
-                 android:textAppearance="?android:attr/textAppearanceMedium" />
+                 android:textAppearance="?android:attr/textAppearanceMedium"/>
 
              <ImageButton
                  android:id="@+id/imageButton1"
