@@ -7,6 +7,9 @@ import android.media.MediaRecorder;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
@@ -17,6 +20,10 @@ public class Photo extends Activity implements SurfaceHolder.Callback{
 	//Variables Globales
 	private String nombreEvento;
 	private String orientacionImg;
+	
+	private Button btnGrabar;
+	private Button btnDetener;
+	private Button btnReproducir;
 	
 	private MediaRecorder mediaRecorder = null;
 	private MediaPlayer   mediaPlayer = null;
@@ -33,9 +40,38 @@ public class Photo extends Activity implements SurfaceHolder.Callback{
 		nombreEvento = getIntent().getStringExtra("nombreEvento");
 		
 		//Inicialización de Parámetros
+        btnGrabar =  (Button)findViewById(R.id.btnGrabar);
+		btnDetener = (Button)findViewById(R.id.btnDetener);
+		btnReproducir = (Button)findViewById(R.id.btnReproducir);
+		
+		
 		videoPhotoFinish = Environment.getExternalStorageDirectory() + "/test.mp4";
+		SurfaceView surface = (SurfaceView)findViewById(R.id.layoutVideo);
+		SurfaceHolder holder = surface.getHolder();
+		holder.addCallback(this);
+		holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
 		
+		//Acciones de los botones
+		btnGrabar.setOnClickListener(new OnClickListener() {
+		    @Override
+		    public void onClick(View v) {
+		            btnGrabar.setEnabled(false);
+		            btnDetener.setEnabled(true);
+		            btnReproducir.setEnabled(false);
+		            prepareRecorder();
+		            mediaRecorder.setOutputFile(fileName);
+		            try {
+		                mediaRecorder.prepare();
+		            } catch (IllegalStateException e) {
+		            } catch (IOException e) {
+		            }
+		 
+		            mediaRecorder.start();
+		            recording = true;
+		    }
+		});
+		Botón detener: habilitam
 	}
 	
 	//Método para configurar los atributos de la grabación
