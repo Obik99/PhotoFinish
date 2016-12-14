@@ -14,98 +14,142 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
 
-
 public class Photo extends Activity implements SurfaceHolder.Callback{
+    /** Called when the activity is first created. */
 	
-	//Variables Globales
-	private String nombreEvento;
-	private String orientacionImg;
+	private boolean recording = false; // Indica si se está grabando	
 	
-	private Button btnGrabar;
-	private Button btnDetener;
-	private Button btnReproducir;
+	private MediaRecorder mediaRecorder; // Permite la grabación
+	private MediaPlayer mediaPlayer; // Permite la reproducción
+	private String path; // Ruta de almacenamiento del archivo
 	
-	private MediaRecorder mediaRecorder = null;
-	private MediaPlayer   mediaPlayer = null;
-	private String        videoPhotoFinish = null;
-	private boolean       grabando = false;
-		
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.photo);
-		
-		//Valores del Activity anterior
-		orientacionImg = getIntent().getStringExtra("orientacionImagen");
-		nombreEvento = getIntent().getStringExtra("nombreEvento");
-		
-		//Inicialización de Parámetros
-        btnGrabar =  (Button)findViewById(R.id.btnGrabar);
-		btnDetener = (Button)findViewById(R.id.btnDetener);
-		btnReproducir = (Button)findViewById(R.id.btnReproducir);
-		
-		
-		videoPhotoFinish = Environment.getExternalStorageDirectory() + "/test.mp4";
-		SurfaceView surface = (SurfaceView)findViewById(R.id.layoutVideo);
-		SurfaceHolder holder = surface.getHolder();
-		holder.addCallback(this);
-		holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.photo);
+        
+        path = Environment.getExternalStorageDirectory() + "/myvideo.mp4";
+        
+        SurfaceView surface = (SurfaceView) findViewById(R.id.surfaceView);
+        surface.getHolder().addCallback(this);
+        surface.getHolder().setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        
+        final Button recordButton = (Button) findViewById(R.id.btnGrabar);
+        final Button stopButton = (Button) findViewById(R.id.btnParar);
+        final Button playButton = (Button) findViewById(R.id.btnRepr);
+        
+        recordButton.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				recordButton.setEnabled(false);
+				stopButton.setEnabled(true);
+				playButton.setEnabled(false);
+				recording = true;
+				
+				// Se establecen las opciones de audio y de vídeo para la grabación
 
-		
-		//Acciones de los botones
-		btnGrabar.setOnClickListener(new OnClickListener() {
-		    @Override
-		    public void onClick(View v) {
-		            btnGrabar.setEnabled(false);
-		            btnDetener.setEnabled(true);
-		            btnReproducir.setEnabled(false);
-		            prepareRecorder();
-		            mediaRecorder.setOutputFile(fileName);
-		            try {
-		                mediaRecorder.prepare();
-		            } catch (IllegalStateException e) {
-		            } catch (IOException e) {
-		            }
-		 
-		            mediaRecorder.start();
-		            recording = true;
-		    }
+		    	mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+		    	mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+		    	mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP);
+		    	
+		    	// Ruta de grabación
+		    	mediaRecorder.setOutputFile(path);
+		    	
+		    	try {
+					mediaRecorder.prepare();
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				mediaRecorder.start();
+			}
 		});
-		Botón detener: habilitam
-	}
-	
-	//Método para configurar los atributos de la grabación
-	public void prepareRecorder(){
-	    mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-	    mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);     
-	    mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP);
-	}
-	
-	//Para inicializar la grabación
-	@Override
-	public void surfaceChanged(SurfaceHolder holder, int arg1, int arg2, int arg3) {
-		//Verificamos primero que sea nulo el valor de mediaRecorder
-		if (mediaRecorder == null) {
-	        mediaRecorder = new MediaRecorder();
-	        mediaRecorder.setPreviewDisplay(holder.getSurface());
-	    }
+        
+        stopButton.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				recordButton.setEnabled(true);
+				stopButton.setEnabled(false);
+				playButton.setEnabled(true);
+				
+				if (recording){
+					mediaRecorder.stop();
+					mediaRecorder.reset();
+					recording = false;
+				}else{
+					mediaPlayer.stop();
+					mediaPlayer.reset();
+					playButton.setText("Play");
+				}
+			}
+		});
+        
+        playButton.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				recordButton.setEnabled(false);
+				stopButton.setEnabled(true);
+				playButton.setEnabled(true);
+				
+				if (!mediaPlayer.isPlaying()){
+					
+					playButton.setText("Pause");
+					
+					mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+						
+						public void onCompletion(MediaPlayer mp) {
+							recordButton.setEnabled(true);
+							stopButton.setEnabled(false);
+							playButton.setEnabled(true);
+							playButton.setText("Play");
+						}
+					});
+					
+					if (mediaPlayer.getCurrentPosition() == 0){
+						try{						
+							mediaPlayer.setDataSource(path);
+							mediaPlayer.prepare();
+						} catch(IllegalArgumentException e) {
+						} catch (IOException e) {
+						}
+					}
+					
+					mediaPlayer.start();
+				}else{
+					mediaPlayer.pause();
+					playButton.setText("Play");
+				}
+			}
+		});
+    }
+
+	public void surfaceChanged(SurfaceHolder holder, int format, int width,
+			int height) {
+		// TODO Auto-generated method stub
 		
-		//Verificamos primero que sea nulo el valor de mediaPlayer
-		if (mediaPlayer == null) {
-	        mediaPlayer = new MediaPlayer();
-	        mediaPlayer.setDisplay(holder);
-	    }
 	}
-	
-	@Override
-	public void surfaceCreated(SurfaceHolder arg0) {
+
+	public void surfaceCreated(SurfaceHolder holder) {
+		
+		// Inicialización del reproductor y grabador si son nulos
+		if (mediaRecorder == null){
+			mediaRecorder = new MediaRecorder();
+			mediaRecorder.setPreviewDisplay(holder.getSurface());
+		}
+		
+		if (mediaPlayer == null){
+			mediaPlayer = new MediaPlayer();
+			mediaPlayer.setDisplay(holder);
+		}		
 	}
-	
-	//Sirve para liberar los recursos
-	@Override
-	public void surfaceDestroyed(SurfaceHolder arg0) {
+
+	public void surfaceDestroyed(SurfaceHolder holder) {
+		// Se liberan los recursos asociados con estos objetos
 		mediaRecorder.release();
-		mediaPlayer.release();
+		mediaPlayer.release();		
 	}
-	
 }
