@@ -51,7 +51,7 @@ public class Photo extends Activity implements SurfaceHolder.Callback{
 		    	mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
 		    	mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
 		    	mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP);
-		    	
+
 		    	// Ruta de grabación
 		    	mediaRecorder.setOutputFile(path);
 		    	

@@ -1,39 +1,45 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/LinearLayout2"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.obik99.bean.MainActivity" >
-
-    <FrameLayout
-        android:id="@+id/layoutVideo"
-        android:layout_width="250dp"
-        android:layout_height="200dp" >
-
-    </FrameLayout>
-
-    <Button
-        android:id="@+id/btnGrabar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Grabar" />
-
-    <Button
-        android:id="@+id/btnDetener"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Detener" />
-
-    <Button
-        android:id="@+id/btnReproducir"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reproducir" />
-
-</LinearLayout>
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent" >
+	 
+	        <LinearLayout
+	            android:id="@+id/linearLayout1"
+	            android:layout_width="100dp"
+	            android:layout_height="match_parent"
+	            android:layout_alignParentRight="true"
+	            android:layout_alignParentTop="true"
+	            android:orientation="vertical" >
+	 
+	            <Button
+	                android:id="@+id/btnGrabar"
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent"
+	                android:layout_weight="1"
+	                android:text="Record"
+	                android:enabled="true" />
+	 
+	            <Button
+	                android:id="@+id/btnParar"
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent"
+	                android:layout_weight="1"
+	                android:text="Stop"
+	                android:enabled="false" />
+	 
+	            <Button
+	                android:id="@+id/btnRepr"
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent"
+	                android:layout_weight="1"
+	                android:text="Play"
+	                android:enabled="true" />
+	        </LinearLayout>
+	 
+	        <SurfaceView
+	            android:id="@+id/surfaceView"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:layout_alignParentTop="true"
+	            android:layout_toLeftOf="@+id/linearLayout1" /> 
+</RelativeLayout>
