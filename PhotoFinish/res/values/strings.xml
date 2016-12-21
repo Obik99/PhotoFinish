@@ -2,9 +2,8 @@
 <resources>
 
     <string name="app_name">PhotoFinish</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Configuracines</string>
-    <string name="nada"></string>
+    <string name="action_settings">Configuraciones</string>
+    <string name="str_tomarFoto">Tomar foto</string>
     
     <string name="str_confevent">Configuración Evento</string>
     <string name="str_iniciarcomp">Iniciar Competencia</string>

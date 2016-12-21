@@ -1,10 +1,13 @@
 package com.obik99.bean;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.view.Menu;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -14,142 +17,62 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
 
-public class Photo extends Activity implements SurfaceHolder.Callback{
-    /** Called when the activity is first created. */
+public class Photo extends Activity {
+	private final String ruta_fotos = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/misfotos/";
+	private File file = new File(ruta_fotos);
+	private Button boton;
 	
-	private boolean recording = false; // Indica si se está grabando	
-	
-	private MediaRecorder mediaRecorder; // Permite la grabación
-	private MediaPlayer mediaPlayer; // Permite la reproducción
-	private String path; // Ruta de almacenamiento del archivo
-	
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.photo);
-        
-        path = Environment.getExternalStorageDirectory() + "/myvideo.mp4";
-        
-        SurfaceView surface = (SurfaceView) findViewById(R.id.surfaceView);
-        surface.getHolder().addCallback(this);
-        surface.getHolder().setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        
-        final Button recordButton = (Button) findViewById(R.id.btnGrabar);
-        final Button stopButton = (Button) findViewById(R.id.btnParar);
-        final Button playButton = (Button) findViewById(R.id.btnRepr);
-        
-        recordButton.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				recordButton.setEnabled(false);
-				stopButton.setEnabled(true);
-				playButton.setEnabled(false);
-				recording = true;
-				
-				// Se establecen las opciones de audio y de vídeo para la grabación
-
-		    	mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-		    	mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-		    	mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP);
-
-		    	// Ruta de grabación
-		    	mediaRecorder.setOutputFile(path);
-		    	
-		    	try {
-					mediaRecorder.prepare();
-				} catch (IllegalStateException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				mediaRecorder.start();
-			}
-		});
-        
-        stopButton.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				recordButton.setEnabled(true);
-				stopButton.setEnabled(false);
-				playButton.setEnabled(true);
-				
-				if (recording){
-					mediaRecorder.stop();
-					mediaRecorder.reset();
-					recording = false;
-				}else{
-					mediaPlayer.stop();
-					mediaPlayer.reset();
-					playButton.setText("Play");
-				}
-			}
-		});
-        
-        playButton.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				recordButton.setEnabled(false);
-				stopButton.setEnabled(true);
-				playButton.setEnabled(true);
-				
-				if (!mediaPlayer.isPlaying()){
-					
-					playButton.setText("Pause");
-					
-					mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
-						
-						public void onCompletion(MediaPlayer mp) {
-							recordButton.setEnabled(true);
-							stopButton.setEnabled(false);
-							playButton.setEnabled(true);
-							playButton.setText("Play");
-						}
-					});
-					
-					if (mediaPlayer.getCurrentPosition() == 0){
-						try{						
-							mediaPlayer.setDataSource(path);
-							mediaPlayer.prepare();
-						} catch(IllegalArgumentException e) {
-						} catch (IOException e) {
-						}
-					}
-					
-					mediaPlayer.start();
-				}else{
-					mediaPlayer.pause();
-					playButton.setText("Play");
-				}
-			}
-		});
-    }
-
-	public void surfaceChanged(SurfaceHolder holder, int format, int width,
-			int height) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void surfaceCreated(SurfaceHolder holder) {
-		
-		// Inicialización del reproductor y grabador si son nulos
-		if (mediaRecorder == null){
-			mediaRecorder = new MediaRecorder();
-			mediaRecorder.setPreviewDisplay(holder.getSurface());
-		}
-		
-		if (mediaPlayer == null){
-			mediaPlayer = new MediaPlayer();
-			mediaPlayer.setDisplay(holder);
-		}		
-	}
-
-	public void surfaceDestroyed(SurfaceHolder holder) {
-		// Se liberan los recursos asociados con estos objetos
-		mediaRecorder.release();
-		mediaPlayer.release();		
-	}
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+	  super.onCreate(savedInstanceState);
+	  setContentView(R.layout.activity_main);
+	   //======== codigo nuevo ========
+	   boton = (Button) findViewById(R.id.btnTomaFoto);
+	   //Si no existe crea la carpeta donde se guardaran las fotos
+	   file.mkdirs();
+	   //accion para el boton
+	   boton.setOnClickListener(new View.OnClickListener() {
+	 
+	    @Override
+	    public void onClick(View v) {
+	     String file = ruta_fotos + getCode() + ".jpg";
+	     File mi_foto = new File( file );
+	     try {
+	                  mi_foto.createNewFile();
+	              } catch (IOException ex) {              
+	               Log.e("ERROR ", "Error:" + ex);
+	              }       
+	              //
+	              Uri uri = Uri.fromFile( mi_foto );
+	              //Abre la camara para tomar la foto
+	              Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+	              //Guarda imagen
+	              cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+	              //Retorna a la actividad
+	              startActivityForResult(cameraIntent, 0);
+	    }
+	 
+	   });
+	   //====== codigo nuevo:end ====== 
+	  }
+	 
+	  /**
+	  * Metodo privado que genera un codigo unico segun la hora y fecha del sistema
+	  * @return photoCode 
+	  * */
+	  @SuppressLint("SimpleDateFormat")
+	  private String getCode()
+	  {
+	   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
+	   String date = dateFormat.format(new Date() );
+	   String photoCode = "pic_" + date;  
+	   return photoCode;
+	  }
+	  
+	  @Override
+	  public boolean onCreateOptionsMenu(Menu menu) {
+	   // Inflate the menu; this adds items to the action bar if it is present.
+	   getMenuInflater().inflate(R.menu.main, menu);
+	   return true;
+	  }
 }
