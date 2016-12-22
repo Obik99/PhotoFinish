@@ -1,78 +1,127 @@
 package com.obik99.bean;
 
-import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
-import android.media.MediaPlayer.OnCompletionListener;
-import android.view.Menu;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.os.Bundle;
-import android.os.Environment;
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.hardware.Camera;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.SurfaceHolder;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 public class Photo extends Activity {
-	private final String ruta_fotos = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/misfotos/";
-	private File file = new File(ruta_fotos);
-	private Button boton;
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-	  super.onCreate(savedInstanceState);
-	  setContentView(R.layout.activity_main);
-	   //======== codigo nuevo ========
-	   boton = (Button) findViewById(R.id.btnTomaFoto);
-	   //Si no existe crea la carpeta donde se guardaran las fotos
-	   file.mkdirs();
-	   //accion para el boton
-	   boton.setOnClickListener(new View.OnClickListener() {
-	 
+	 private Camera mCamera;
+	    private CameraPreview mPreview;
+	    private ImageView imv;
+	    private Button b;
+
+	    private Camera.PictureCallback mPicture = new Camera.PictureCallback(){
+
+	        @Override
+	        public void onPictureTaken(byte[] bytes, Camera camera) {
+	            Bitmap b = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+	            imv.setImageBitmap(b);
+	        }
+	    };
+
 	    @Override
-	    public void onClick(View v) {
-	     String file = ruta_fotos + getCode() + ".jpg";
-	     File mi_foto = new File( file );
-	     try {
-	                  mi_foto.createNewFile();
-	              } catch (IOException ex) {              
-	               Log.e("ERROR ", "Error:" + ex);
-	              }       
-	              //
-	              Uri uri = Uri.fromFile( mi_foto );
-	              //Abre la camara para tomar la foto
-	              Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-	              //Guarda imagen
-	              cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-	              //Retorna a la actividad
-	              startActivityForResult(cameraIntent, 0);
+	    public void onCreate(Bundle savedInstaceState){
+	        super.onCreate(savedInstaceState);
+	        setContentView(R.layout.activity_main);
+	        mCamera = getCameraInstance();
+	        mPreview = new CameraPreview(this,mCamera);
+	        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
+	        imv = (ImageView)findViewById(R.id.imageview1);
+	        b = (Button)findViewById(R.id.button_capture);
+	        b.setOnClickListener(new View.OnClickListener() {
+	            @Override
+	            public void onClick(View view) {
+	                mCamera.takePicture(null,null,mPicture);
+	            }
+	        });
+	        preview.addView(mPreview);
 	    }
-	 
-	   });
-	   //====== codigo nuevo:end ====== 
-	  }
-	 
-	  /**
-	  * Metodo privado que genera un codigo unico segun la hora y fecha del sistema
-	  * @return photoCode 
-	  * */
-	  @SuppressLint("SimpleDateFormat")
-	  private String getCode()
-	  {
-	   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
-	   String date = dateFormat.format(new Date() );
-	   String photoCode = "pic_" + date;  
-	   return photoCode;
-	  }
-	  
-	  @Override
-	  public boolean onCreateOptionsMenu(Menu menu) {
-	   // Inflate the menu; this adds items to the action bar if it is present.
-	   getMenuInflater().inflate(R.menu.main, menu);
-	   return true;
-	  }
+
+	    @Override
+	    public void onPause(){
+	        super.onPause();
+	        if(mCamera != null){
+	            mCamera.release();
+	            mCamera = null;
+	        }
+	    }
+
+	    private boolean checkCameraHardware(Context context) {
+	        if(context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    }
+
+	    public static Camera getCameraInstance() {
+	        Camera c = null;
+	        try {
+	            c = Camera.open();
+	        } catch (Exception e){
+
+	        }
+	        return c;
+	    }
+	    
+public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback{
+
+	        private Camera mCamera;
+	        private SurfaceHolder mHolder;
+
+	        public CameraPreview(Context context, Camera camera){
+	            super(context);
+	            mCamera = camera;
+	            mHolder = getHolder();
+	            mHolder.addCallback(this);
+	            mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+	        }
+
+	        @Override
+	        public void surfaceCreated(SurfaceHolder surfaceHolder) {
+	            try {
+	                mCamera.setPreviewDisplay(surfaceHolder);
+	                mCamera.startPreview();
+	            } catch (IOException e){
+	                Log.d("Error",e.toString());
+	            }
+	        }
+
+	        @Override
+	        public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i2, int i3) {
+	            if(mHolder.getSurface() == null){
+	                return;
+	            }
+
+	            try {
+	                mCamera.stopPreview();
+	            } catch (Exception e){
+
+	            }
+	            try {
+	                mCamera.setPreviewDisplay(surfaceHolder);
+	                mCamera.startPreview();
+	            } catch (Exception e){
+	                Log.d("ERROR",e.toString());
+	            }
+
+	        }
+
+	        @Override
+	        public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+
+	        }
+	    }
 }
