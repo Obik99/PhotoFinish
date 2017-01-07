@@ -12,6 +12,7 @@
     <string name="str_orientacion">Orientación de la Prueba</string>
     <string name="str_meta">Meta</string>
     <string name="str_salida">SALIDA</string>
+    <string name="str_foto">Tomar foto</string>
     <string name="str_valor_default">Valor por defecto</string>
    
 </resources>
